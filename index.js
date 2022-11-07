@@ -17,10 +17,12 @@ app.use(bodyparser.json());
 
 app.get('/',async (req,res)=>{
     let product_info = await productDetails.find({});
-    let customer_info = await customElements.find({});
+    let customer_info = await customerDetails.find({});
+    let order_info = await orderDetails.find({});
     let data = {
         productInfo : product_info,
-        customerInfo : customer_info
+        customerInfo : customer_info,
+        orderInfo : order_info
     }
     res.render('productinfo',{data : data});
 })
@@ -41,6 +43,10 @@ app.post('/orders',async (req,res)=>{
                 message : 'INSUFFICIENT FUNDS'
             })
         }else{
+            let newBalance = Customer_info.Balance - Product_info.Product_price*newOrder.Quantity;
+            let newAvailable_quantity = Product_info.Available_quantity - newOrder.Quantity;
+            await customerDetails.findOneAndUpdate({Customer_id : newOrder.Customer_id},{Balance : newBalance});
+            await productDetails.findOneAndUpdate({Product_id : newOrder.Product_id},{Available_quantity : newAvailable_quantity});
             orderDetails.create(newOrder,(err,docs)=>{
                 if(err){
                     res.json({

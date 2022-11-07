@@ -72,5 +72,28 @@
           </tbody>
         </table>
       </div>
+      <h1>Order Details</h1>
+      <div>
+        <table>
+          <thead>
+          <tr>
+              <th>Customer_id</th>
+              <th>Product_id</th>
+              <th>Product_name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% data.orderInfo.forEach((item)=>{%>
+                <tr>
+                    <td><%=item.Customer_id%></td>
+                    <td><%=item.Product_id%></td>
+                    <td><%=item.Product_name%></td>
+                    <td><%=item.Quantity%></td>
+                </tr>
+                <%});%>
+          </tbody>
+        </table>
+      </div>
 </body>
 </html>
